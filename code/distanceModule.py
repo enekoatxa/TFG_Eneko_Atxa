@@ -83,77 +83,102 @@ def computeDistancesNorm(person0, person1):
 	return ret
 
 def computeNormalizer(person0, person1):
+	#best normalizer
+	if person0[2]!=0 and person0[5]!=0 and person0[26]!=0:
+		if person0[32]!=0 and person0[35]!=0:
+			return math.sqrt(((person0[0]-person0[3])**2)+((person0[1]-person0[4])**2)) 
+			+ math.sqrt(((person0[3]-person0[24])**2)+((person0[4]-person0[25])**2))
+			+ math.sqrt(((person0[24]-person0[30])**2)+((person0[25]-person0[31])**2))
+			+ math.sqrt(((person0[30]-person0[33])**2)+((person0[31]-person0[34])**2))
+		elif person0[41]!=0 and person0[44]!=0:
+			return math.sqrt(((person0[0]-person0[3])**2)+((person0[1]-person0[4])**2)) 
+			+ math.sqrt(((person0[3]-person0[24])**2)+((person0[4]-person0[25])**2))
+			+ math.sqrt(((person0[24]-person0[39])**2)+((person0[25]-person0[40])**2))
+			+ math.sqrt(((person0[39]-person0[42])**2)+((person0[40]-person0[43])**2))
+	if person1[2]!=0 and person1[5]!=0 and person1[26]!=0:
+		if person1[32]!=0 and person1[35]!=0:
+			return math.sqrt(((person1[0]-person1[3])**2)+((person1[1]-person1[4])**2)) 
+			+ math.sqrt(((person1[3]-person1[24])**2)+((person1[4]-person1[25])**2))
+			+ math.sqrt(((person1[24]-person1[30])**2)+((person1[25]-person1[31])**2))
+			+ math.sqrt(((person1[30]-person1[33])**2)+((person1[31]-person1[34])**2))
+		elif person1[41]!=0 and person1[44]!=0:
+			return math.sqrt(((person1[0]-person1[3])**2)+((person1[1]-person1[4])**2)) 
+			+ math.sqrt(((person1[3]-person1[24])**2)+((person1[4]-person1[25])**2))
+			+ math.sqrt(((person1[24]-person1[39])**2)+((person1[25]-person1[40])**2))
+			+ math.sqrt(((person1[39]-person1[42])**2)+((person1[40]-person1[43])**2))
+	#worse normalizer
 	if person0[2]!=0:
-		if person0[35]:
+		if person0[35]!=0:
 			return math.sqrt(((person0[0]-person0[33])**2)+((person0[1]-person0[34])**2))
-		if person0[44]:
+		if person0[44]!=0:
 			return math.sqrt(((person0[0]-person0[42])**2)+((person0[1]-person0[43])**2))
 	if person1[2]!=0:
-		if person1[35]:
+		if person1[35]!=0:
 			return math.sqrt(((person1[0]-person1[33])**2)+((person1[1]-person1[34])**2))
-		if person1[44]:
+		if person1[44]!=0:
 			return math.sqrt(((person1[0]-person1[42])**2)+((person1[1]-person1[43])**2))
-	if person0[2]!=0:
-		if person0[26]:
-			return math.sqrt(((person0[0]-person0[24])**2)+((person0[1]-person0[25])**2)) * 2
-		if person0[29]:
-			return math.sqrt(((person0[0]-person0[27])**2)+((person0[1]-person0[28])**2)) * 2
-		if person0[38]:
-			return math.sqrt(((person0[0]-person0[36])**2)+((person0[1]-person0[37])**2)) * 2
-	if person1[2]!=0:
-		if person1[26]:
-			return math.sqrt(((person1[0]-person1[24])**2)+((person1[1]-person1[25])**2)) * 2
-		if person1[29]:
-			return math.sqrt(((person1[0]-person1[27])**2)+((person1[1]-person1[28])**2)) * 2
-		if person1[38]:
-			return math.sqrt(((person1[0]-person1[36])**2)+((person1[1]-person1[37])**2)) * 2
 	if person0[47]!=0:
-		if person0[35]:
+		if person0[35]!=0:
 			return math.sqrt(((person0[45]-person0[33])**2)+((person0[46]-person0[34])**2))
-		if person0[44]:
+		if person0[44]!=0:
 			return math.sqrt(((person0[45]-person0[42])**2)+((person0[46]-person0[43])**2))
 	if person1[47]!=0:
-		if person1[35]:
+		if person1[35]!=0:
 			return math.sqrt(((person1[45]-person1[33])**2)+((person1[46]-person1[34])**2))
-		if person1[44]:
+		if person1[44]!=0:
 			return math.sqrt(((person1[45]-person1[42])**2)+((person1[46]-person1[43])**2))
-	if person0[47]!=0:
-		if person0[26]:
-			return math.sqrt(((person0[45]-person0[24])**2)+((person0[46]-person0[25])**2)) * 2
-		if person0[29]:
-			return math.sqrt(((person0[45]-person0[27])**2)+((person0[46]-person0[28])**2)) * 2
-		if person0[38]:
-			return math.sqrt(((person0[45]-person0[36])**2)+((person0[46]-person0[37])**2)) * 2
-	if person1[47]!=0:
-		if person1[26]:
-			return math.sqrt(((person1[45]-person1[24])**2)+((person1[46]-person1[25])**2)) * 2
-		if person1[29]:
-			return math.sqrt(((person1[45]-person1[27])**2)+((person1[46]-person1[28])**2)) * 2
-		if person1[38]:
-			return math.sqrt(((person1[45]-person1[36])**2)+((person1[46]-person1[37])**2)) * 2
 	if person0[50]!=0:
-		if person0[35]:
+		if person0[35]!=0:
 			return math.sqrt(((person0[48]-person0[33])**2)+((person0[49]-person0[34])**2))
-		if person0[44]:
+		if person0[44]!=0:
 			return math.sqrt(((person0[48]-person0[42])**2)+((person0[49]-person0[43])**2))
 	if person1[50]!=0:
-		if person1[35]:
+		if person1[35]!=0:
 			return math.sqrt(((person1[48]-person1[33])**2)+((person1[49]-person1[34])**2))
-		if person1[44]:
+		if person1[44]!=0:
 			return math.sqrt(((person1[48]-person1[42])**2)+((person1[49]-person1[43])**2))
+	#worst normalizer
+	if person0[2]!=0:
+		if person0[26]!=0:
+			return math.sqrt(((person0[0]-person0[24])**2)+((person0[1]-person0[25])**2)) * 2
+		if person0[29]!=0:
+			return math.sqrt(((person0[0]-person0[27])**2)+((person0[1]-person0[28])**2)) * 2
+		if person0[38]!=0:
+			return math.sqrt(((person0[0]-person0[36])**2)+((person0[1]-person0[37])**2)) * 2
+	if person1[2]!=0:
+		if person1[26]!=0:
+			return math.sqrt(((person1[0]-person1[24])**2)+((person1[1]-person1[25])**2)) * 2
+		if person1[29]!=0:
+			return math.sqrt(((person1[0]-person1[27])**2)+((person1[1]-person1[28])**2)) * 2
+		if person1[38]!=0:
+			return math.sqrt(((person1[0]-person1[36])**2)+((person1[1]-person1[37])**2)) * 2
+	if person0[47]!=0:
+		if person0[26]!=0:
+			return math.sqrt(((person0[45]-person0[24])**2)+((person0[46]-person0[25])**2)) * 2
+		if person0[29]!=0:
+			return math.sqrt(((person0[45]-person0[27])**2)+((person0[46]-person0[28])**2)) * 2
+		if person0[38]!=0:
+			return math.sqrt(((person0[45]-person0[36])**2)+((person0[46]-person0[37])**2)) * 2
+	if person1[47]!=0:
+		if person1[26]!=0:
+			return math.sqrt(((person1[45]-person1[24])**2)+((person1[46]-person1[25])**2)) * 2
+		if person1[29]!=0:
+			return math.sqrt(((person1[45]-person1[27])**2)+((person1[46]-person1[28])**2)) * 2
+		if person1[38]!=0:
+			return math.sqrt(((person1[45]-person1[36])**2)+((person1[46]-person1[37])**2)) * 2
 	if person0[50]!=0:
-		if person0[26]:
+		if person0[26]!=0:
 			return math.sqrt(((person0[48]-person0[24])**2)+((person0[49]-person0[25])**2)) * 2
-		if person0[29]:
+		if person0[29]!=0:
 			return math.sqrt(((person0[48]-person0[27])**2)+((person0[49]-person0[28])**2)) * 2
-		if person0[38]:
+		if person0[38]!=0:
 			return math.sqrt(((person0[48]-person0[36])**2)+((person0[49]-person0[37])**2)) * 2
 	if person1[50]!=0:
-		if person1[26]:
+		if person1[26]!=0:
 			return math.sqrt(((person1[48]-person1[24])**2)+((person1[49]-person1[25])**2)) * 2
-		if person1[29]:
+		if person1[29]!=0:
 			return math.sqrt(((person1[48]-person1[27])**2)+((person1[49]-person1[28])**2)) * 2
-		if person1[38]:
+		if person1[38]!=0:
 			return math.sqrt(((person1[48]-person1[36])**2)+((person1[49]-person1[37])**2)) * 2
 	return -1
 		
