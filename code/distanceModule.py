@@ -5,9 +5,12 @@ class distanceModule(object):
 	def __init__(self, arg):
 		super(distanceModule, self).__init__()
 		self.arg = arg
+
+#copmutes distances from both hands to other person's face
 def computeDistances(person0, person1):
 	ret = []
 	dist = []
+	#right hand 0 to face 1 distance
 	if(person0[14]!=0):
 		if(person1[2]!=0):
 			dist.append(math.sqrt(((person0[12]-person1[0])**2)+((person0[13]-person1[1])**2)))
@@ -24,6 +27,7 @@ def computeDistances(person0, person1):
 	else:
 		ret.append(-1)
 		dist.clear()
+	#left hand 0 to face 1 distance
 	if(person0[23]!=0):
 		if(person1[2]!=0):
 			dist.append(math.sqrt(((person0[21]-person1[0])**2)+((person0[22]-person1[1])**2)))
@@ -40,6 +44,7 @@ def computeDistances(person0, person1):
 	else:
 		ret.append(-1)
 		dist.clear()
+	#right hand 1 to face 0 distance
 	if(person1[14]!=0):
 		if(person0[2]!=0):
 			dist.append(math.sqrt(((person1[12]-person0[0])**2)+((person1[13]-person0[1])**2)))
@@ -56,6 +61,7 @@ def computeDistances(person0, person1):
 	else:
 		ret.append(-1)
 		dist.clear()
+	#left hand 1 to face 0 distance
 	if(person1[23]!=0):
 		if(person0[2]!=0):
 			dist.append(math.sqrt(((person1[21]-person0[0])**2)+((person1[22]-person0[1])**2)))
@@ -74,6 +80,7 @@ def computeDistances(person0, person1):
 		dist.clear()
 	return ret
 
+#computes distances divided by a normalizer
 def computeDistancesNorm(person0, person1):
 	ret=computeDistances(person0, person1)
 	normConstant = computeNormalizer(person0, person1)
@@ -82,8 +89,9 @@ def computeDistancesNorm(person0, person1):
 		return newList
 	return ret
 
+#computes the normalizer
 def computeNormalizer(person0, person1):
-	#best normalizer
+	#best normalizer: sum of different bones
 	if person0[2]!=0 and person0[5]!=0 and person0[26]!=0:
 		if person0[32]!=0 and person0[35]!=0:
 			return math.sqrt(((person0[0]-person0[3])**2)+((person0[1]-person0[4])**2)) 
@@ -106,7 +114,7 @@ def computeNormalizer(person0, person1):
 			+ math.sqrt(((person1[3]-person1[24])**2)+((person1[4]-person1[25])**2))
 			+ math.sqrt(((person1[24]-person1[39])**2)+((person1[25]-person1[40])**2))
 			+ math.sqrt(((person1[39]-person1[42])**2)+((person1[40]-person1[43])**2))
-	#worse normalizer
+	#worse normalizer: distance from head to feet
 	if person0[2]!=0:
 		if person0[35]!=0:
 			return math.sqrt(((person0[0]-person0[33])**2)+((person0[1]-person0[34])**2))
@@ -137,7 +145,7 @@ def computeNormalizer(person0, person1):
 			return math.sqrt(((person1[48]-person1[33])**2)+((person1[49]-person1[34])**2))
 		if person1[44]!=0:
 			return math.sqrt(((person1[48]-person1[42])**2)+((person1[49]-person1[43])**2))
-	#worst normalizer
+	#worst normalizer: distance from head to waist * 2
 	if person0[2]!=0:
 		if person0[26]!=0:
 			return math.sqrt(((person0[0]-person0[24])**2)+((person0[1]-person0[25])**2)) * 2

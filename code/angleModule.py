@@ -6,6 +6,7 @@ class angleModule(object):
 		super(angleModule, self).__init__()
 		self.arg = arg
 
+#computes the angles of a persons body and arms
 def computeAngles(person):
 	ret = []
 	shoulderR=[0,0]
@@ -16,6 +17,7 @@ def computeAngles(person):
 	forearmR=[0,0]
 	forearmL=[0,0]
 
+	#calculate the vectors from the points
 	if person[5]!=0 and person[8]!=0:
 		shoulderR = [person[3]-person[6],person[4]-person[7]]
 	if person[5]!=0 and person[17]!=0:
@@ -31,31 +33,32 @@ def computeAngles(person):
 	if person[20]!=0 and person[23]!=0:
 		forearmL = [person[18]-person[21],person[19]-person[22]]
 
+	#angle between body and right shoulder
 	if shoulderR!=[0,0] and body!=[0,0]:
 		ret.append(angle(shoulderR, body))
 	else:
 		ret.append(-1)
-
+	#angle between body and left shoulder
 	if shoulderL!=[0,0] and body!=[0,0]:
 		ret.append(angle(shoulderL, body))
 	else:
 		ret.append(-1)
-
+	#angle between right shoulder and right arm
 	if shoulderR!=[0,0] and armR!=[0,0]:
 		ret.append(angle(shoulderR, armR))
 	else:
 		ret.append(-1)
-
+	#angle between left shoulder and left arm
 	if shoulderL!=[0,0] and armL!=[0,0]:
 		ret.append(angle(shoulderL, armL))
 	else:
 		ret.append(-1)
-
+	#angle between right arm and right forearm
 	if armR!=[0,0] and forearmR!=[0,0]:
 		ret.append(angle(armR, forearmR))
 	else:
 		ret.append(-1)
-
+	#angle between left arm and left forearm
 	if armL!=[0,0] and forearmL!=[0,0]:
 		ret.append(angle(armL, forearmL))
 	else:
@@ -63,6 +66,7 @@ def computeAngles(person):
 
 	return ret
 
+#computes angle between 2 vectors, in degrees
 def angle(vector_1, vector_2):
 	unit_vector_1 = vector_1 / np.linalg.norm(vector_1)
 	unit_vector_2 = vector_2 / np.linalg.norm(vector_2)
