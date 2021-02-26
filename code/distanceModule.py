@@ -6,8 +6,8 @@ class distanceModule(object):
 		super(distanceModule, self).__init__()
 		self.arg = arg
 
-#copmutes distances from both hands to other person's face
-def computeDistances(person0, person1):
+#computes distances from both hands to other person's face
+def computeFaceDistances(person0, person1):
 	ret = []
 	dist = []
 	#right hand 0 to face 1 distance
@@ -80,14 +80,73 @@ def computeDistances(person0, person1):
 		dist.clear()
 	return ret
 
+#computes distances from both feet to other person's body
+def computeBodyDistances(person0, person1):
+	ret = []
+	dist = []
+	#right foot 0 to body 1 distance
+	if(person0[35]!=0):
+		if(person1[26]!=0):
+			dist.append(math.sqrt(((person0[33]-person1[24])**2)+((person0[34]-person1[25])**2)))
+		if(person1[29]!=0):
+			dist.append(math.sqrt(((person0[33]-person1[27])**2)+((person0[34]-person1[28])**2)))
+		if(person1[38]!=0):
+			dist.append(math.sqrt(((person0[33]-person1[36])**2)+((person0[34]-person1[37])**2)))
+		ret.append(min(dist))
+		dist.clear()
+	else:
+		ret.append(-1)
+		dist.clear()
+	#left foot 0 to body 1 distance
+	if(person0[44]!=0):
+		if(person1[2]!=0):
+			dist.append(math.sqrt(((person0[42]-person1[24])**2)+((person0[43]-person1[25])**2)))
+		if(person1[47]!=0):
+			dist.append(math.sqrt(((person0[42]-person1[27])**2)+((person0[43]-person1[28])**2)))
+		if(person1[50]!=0):
+			dist.append(math.sqrt(((person0[42]-person1[36])**2)+((person0[43]-person1[37])**2)))
+		dist.clear()
+	else:
+		ret.append(-1)
+		dist.clear()
+	#right foot 1 to body 0 distance
+	if(person1[35]!=0):
+		if(person0[26]!=0):
+			dist.append(math.sqrt(((person1[33]-person0[24])**2)+((person1[34]-person0[25])**2)))
+		if(person0[29]!=0):
+			dist.append(math.sqrt(((person1[33]-person0[27])**2)+((person1[34]-person0[28])**2)))
+		if(person0[38]!=0):
+			dist.append(math.sqrt(((person1[33]-person0[36])**2)+((person1[34]-person0[37])**2)))
+		ret.append(min(dist))
+		dist.clear()
+	else:
+		ret.append(-1)
+		dist.clear()
+	#left foot 1 to body 0 distance
+	if(person1[44]!=0):
+		if(person0[2]!=0):
+			dist.append(math.sqrt(((person1[42]-person0[24])**2)+((person1[43]-person0[25])**2)))
+		if(person0[47]!=0):
+			dist.append(math.sqrt(((person1[42]-person0[27])**2)+((person1[43]-person0[28])**2)))
+		if(person0[50]!=0):
+			dist.append(math.sqrt(((person1[42]-person0[36])**2)+((person1[43]-person0[37])**2)))
+		dist.clear()
+	else:
+		ret.append(-1)
+		dist.clear()
+	return ret
+
 #computes distances divided by a normalizer
 def computeDistancesNorm(person0, person1):
-	ret=computeDistances(person0, person1)
+	ret=computeFaceDistances(person0, person1)
+	ret2=computeBodyDistances(person0, person1)
 	normConstant = computeNormalizer(person0, person1)
 	if normConstant!=-1:
 		newList = [x / normConstant for x in ret]
-		return newList
-	return ret
+		newList2 = [x / normConstant for x in ret2]
+		return newList + newList2
+
+	return ret + ret2
 
 #computes the normalizer
 def computeNormalizer(person0, person1):
