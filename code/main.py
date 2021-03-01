@@ -2,7 +2,7 @@ import JSONReader
 import distanceModule as dm
 import angleModule as am
 
-parsedObject = JSONReader.readJSON()
+parsedObject = JSONReader.readJSONOld()
 
 try:
 	parsedObject["people"][1]

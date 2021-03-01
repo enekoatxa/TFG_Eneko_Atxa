@@ -247,5 +247,5 @@ def computeNormalizer(person0, person1):
 			return math.sqrt(((person1[48]-person1[27])**2)+((person1[49]-person1[28])**2)) * 2
 		if person1[38]!=0:
 			return math.sqrt(((person1[48]-person1[36])**2)+((person1[49]-person1[37])**2)) * 2
-	return -1
+	return 1
 		

@@ -6,7 +6,12 @@ class JSONReader(object):
 		super(JSONReader, self).__init__()
 		self.arg = arg
 	
-def readJSON():
+def readJSONOld():
 	jsonObjectFile = open("../data/1_keypoints.json")
+	jsonObject = jsonObjectFile.read()
+	return json.loads(jsonObject)
+
+def readJSON(path):
+	jsonObjectFile = open(path)
 	jsonObject = jsonObjectFile.read()
 	return json.loads(jsonObject)
