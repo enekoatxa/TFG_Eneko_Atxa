@@ -9,6 +9,7 @@ def processImage(parsedObject, fight):
 	print("-----------")
 	allVectors = []
 	counter = 0
+	finalFile = open("../vectorsDataset.txt", "a")
 	#First, we detect the number of people in the image
 	for i in range(0,50):
 		try:
@@ -19,16 +20,18 @@ def processImage(parsedObject, fight):
 			break
 	if(counter>0):
 		for i in range(0,counter):
-			allVectors.append(processPerson(parsedObject, i, fight))
+			allVectors.append(processPerson(parsedObject, i, fight, finalFile))
 	else:
 		print("There are not any people in the image. Stopping process.")
+	finalFile.close()
 	return str(allVectors)
 
 #Method that processes one individual at once
-def processPerson(parsedObject, i, fight):
+def processPerson(parsedObject, i, fight, finalFile):
 	print(f'Processing person number {i}')
 	armAngles = am.computeArmAngles(parsedObject["people"][i]["pose_keypoints_2d"])
 	legAngles = am.computeLegAngles(parsedObject["people"][i]["pose_keypoints_2d"])
+	finalFile.write(str(armAngles + legAngles + fight)[1:len(str(armAngles + legAngles + fight))-1] + "\n")
 	return armAngles + legAngles + fight
 	
 
@@ -45,6 +48,11 @@ filesFight = os.listdir(args["imagefight"])
 #create a folder to place results if not exists
 if not (os.path.isdir(args["imagefight"]+"/fightVectors")):
 	os.mkdir(args["imagefight"]+"/fightVectors")
+
+#write the big file containing all vectors, formatted correctly
+finalFile = open("../vectorsDataset.txt", "w")
+finalFile.write("ang1, ang2, ang3, ang4, ang5, ang6, ang8, ang9, ang10, fight\n")
+finalFile.close()
 #for each JSON, compute the result vector and write it in the results vectors folder
 if(len(filesFight)>0):
 	for i in range(0,len(filesFight)):
