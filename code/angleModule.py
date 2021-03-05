@@ -95,9 +95,9 @@ def computeLegAngles(person):
 		ret.append(angle(hipR, legR))
 	else:
 		ret.append(-1)
-	#angle between left leg and left calf
-	if legL!=[0,0] and calfL!=[0,0]:
-		ret.append(angle(legL, calfL))
+	#angle between right leg and right calf
+	if legR!=[0,0] and calfR!=[0,0]:
+		ret.append(angle(legR, calfR))
 	else:
 		ret.append(-1)
 	#angle between left hip and left leg

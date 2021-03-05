@@ -51,7 +51,7 @@ if not (os.path.isdir(args["imagefight"]+"/fightVectors")):
 
 #write the big file containing all vectors, formatted correctly
 finalFile = open("../vectorsDataset.txt", "w")
-finalFile.write("ang1, ang2, ang3, ang4, ang5, ang6, ang8, ang9, ang10, fight\n")
+finalFile.write("ang1, ang2, ang3, ang4, ang5, ang6, ang7, ang8, ang9, ang10, fight\n")
 finalFile.close()
 #for each JSON, compute the result vector and write it in the results vectors folder
 if(len(filesFight)>0):
