@@ -108,24 +108,4 @@ output = layers.Dense(1, activation="sigmoid")(x)
 model = keras.Model(all_inputs, output)
 model.compile("adam", "binary_crossentropy", metrics=["accuracy"])
 model.fit(train_ds, epochs=50, validation_data=val_ds)
-
-sample = {
-    "ang1": 88.8532323843883,
-    "ang2": 44.93626419290025,
-    "ang3": -1,
-    "ang4": 90.77926747412394,
-    "ang5": 64.59466201147296,
-    "ang6": 20.919662948863152,
-    "ang7": 89.31726819818603,
-    "ang8": 174.22914165414457,
-    "ang9": 94.29910770170899,
-    "ang10": 174.22914165414457,
-}
-
-input_dict = {name: tf.convert_to_tensor([value]) for name, value in sample.items()}
-predictions = model.predict(input_dict)
-
-print(
-    "This particular person had a %.1f percent probability "
-    "of being in a fight, as evaluated by our model." % (100 * predictions[0][0],)
-)
+model.save('./model')
