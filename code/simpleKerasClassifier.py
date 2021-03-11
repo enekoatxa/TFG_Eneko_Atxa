@@ -5,6 +5,10 @@ from tensorflow import keras
 from tensorflow.keras import layers
 from tensorflow.keras.layers.experimental.preprocessing import Normalization
 import argparse
+from numpy.random import seed
+
+seed(42)
+tf.random.set_seed(42)
 
 ap = argparse.ArgumentParser()
 ap.add_argument("-p", "--path", type=str, required=True,
