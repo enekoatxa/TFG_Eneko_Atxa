@@ -14,9 +14,12 @@ file_url = args["path"]
 dataframe = pd.read_csv(file_url, sep=r'\s*,\s*', header=0, encoding='ascii', engine='python')
 print(dataframe.head())
 
-val_dataframe = dataframe.sample(frac=0.2, random_state=1337)
+val_dataframe = dataframe.sample(frac=0.15, random_state=1337)
 train_dataframe = dataframe.drop(val_dataframe.index)
+test_dataframe = train_dataframe.sample(frac=0.1, random_state=1337)
+train_dataframe = train_dataframe.drop(test_dataframe.index)
 
+print(train_dataframe.head())
 print("Using %d samples for training and %d for validation" % (len(train_dataframe), len(val_dataframe)))
 
 def dataframe_to_dataset(dataframe):
@@ -28,6 +31,8 @@ def dataframe_to_dataset(dataframe):
 
 train_ds = dataframe_to_dataset(train_dataframe)
 val_ds = dataframe_to_dataset(val_dataframe)
+test_ds =dataframe_to_dataset(test_dataframe)
+test_ds = test_ds.map(lambda x_text, x_label: (x_text, tf.expand_dims(x_label, -1)))
 
 for x, y in train_ds.take(1):
     print("Input:", x)
@@ -103,9 +108,14 @@ all_features = layers.concatenate(
     ]
 )
 x = layers.Dense(32, activation="relu")(all_features)
+#x2 = layers.Dense(32, activation="relu")(x)
+#x3 = layers.Dense(32, activation="relu")(x2)
+#x4 = layers.Dense(32, activation="relu")(x3)
 x = layers.Dropout(0.5)(x)
 output = layers.Dense(1, activation="sigmoid")(x)
 model = keras.Model(all_inputs, output)
 model.compile("adam", "binary_crossentropy", metrics=["accuracy"])
+keras.utils.plot_model(model, to_file="model.png", show_shapes=True, rankdir="LR")
 model.fit(train_ds, epochs=50, validation_data=val_ds)
+model.evaluate(test_ds, verbose=1)
 model.save('./model')
