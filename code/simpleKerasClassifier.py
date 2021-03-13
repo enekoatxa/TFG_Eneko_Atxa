@@ -22,6 +22,9 @@ val_dataframe = dataframe.sample(frac=0.15, random_state=1337)
 train_dataframe = dataframe.drop(val_dataframe.index)
 test_dataframe = train_dataframe.sample(frac=0.1, random_state=1337)
 train_dataframe = train_dataframe.drop(test_dataframe.index)
+#2 lines used for the learning curve experiment
+#remove_dataframe = train_dataframe.sample(frac=0.1, random_state=1337)
+#train_dataframe = train_dataframe.drop(remove_dataframe.index)
 
 print(train_dataframe.head())
 print("Using %d samples for training and %d for validation" % (len(train_dataframe), len(val_dataframe)))
