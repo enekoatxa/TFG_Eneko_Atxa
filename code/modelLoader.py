@@ -3,64 +3,32 @@ from tensorflow import keras
 import JSONReader
 import angleModule as am
 import argparse
+import matplotlib as plt
+import pandas as pd
 
-def processPerson(parsedObject, i):
-	print(f'Processing person number {i}')
-	armAngles = am.computeArmAngles(parsedObject["people"][i]["pose_keypoints_2d"])
-	legAngles = am.computeLegAngles(parsedObject["people"][i]["pose_keypoints_2d"])
-	sample = createSample(armAngles + legAngles)
-	input_dict = {name: tf.convert_to_tensor([value]) for name, value in sample.items()}
-	predictions = model.predict(input_dict)
+def dataframe_to_dataset(dataframe):
+    dataframe = dataframe.copy()
+    labels = dataframe.pop("fight")
+    ds = tf.data.Dataset.from_tensor_slices((dict(dataframe), labels))
+    ds = ds.shuffle(buffer_size=len(dataframe))
+    return ds
 
-	print("This particular person had a %.1f percent probability "
-	    "of being in a fight, as evaluated by our model." % (100 * predictions[0][0],))
-
-def createSample(sample):
-	completeSample = {
-    "ang1": sample[0],
-    "ang2": sample[1],
-    "ang3": sample[2],
-    "ang4": sample[3],
-    "ang5": sample[4],
-    "ang6": sample[5],
-    "ang7": sample[6],
-    "ang8": sample[7],
-    "ang9": sample[8],
-    "ang10": sample[9],
-}
-	return completeSample
+def dataframe_to_evaluator(dataframe):
+	dataframe = dataframe.copy()
+	labels = dataframe.pop("fight")
+	return dataframe, labels
 
 ap = argparse.ArgumentParser()
 ap.add_argument("-p", "--path", type=str, required=True,
-	help="path to the input image JSON")
+	help="path to the input vector dataset")
 args = vars(ap.parse_args())
 
+file_url = args["path"]
+dataframe = pd.read_csv(file_url, sep=r'\s*,\s*', header=0, encoding='ascii', engine='python')
+print(dataframe.head())
+
+test_ds =dataframe_to_dataset(dataframe)
+test_ds = test_ds.map(lambda x_text, x_label: (x_text, tf.expand_dims(x_label, -1)))
+
 model = keras.models.load_model('./model')
-parsedObject = JSONReader.readJSON(args["path"])
-
-counter = 0
-for i in range(0,50):
-		try:
-			parsedObject["people"][i]
-			counter += 1
-		except IndexError as e:
-			print(f"There are {counter} people in the image")
-			break
-if(counter>0):
-	for i in range(0,counter):
-		processPerson(parsedObject, i)
-else:
-	print("There are not any people in the image. Stopping process.")
-
-sample = {
-    "ang1": 88.8532323843883,
-    "ang2": 44.93626419290025,
-    "ang3": -1,
-    "ang4": 90.77926747412394,
-    "ang5": 64.59466201147296,
-    "ang6": 20.919662948863152,
-    "ang7": 89.31726819818603,
-    "ang8": 174.22914165414457,
-    "ang9": 94.29910770170899,
-    "ang10": 174.22914165414457,
-}
+model.evaluate(test_ds, verbose=1)

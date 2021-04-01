@@ -1,6 +1,7 @@
 import tensorflow as tf
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
 from tensorflow import keras
 from tensorflow.keras import layers
 from tensorflow.keras.layers.experimental.preprocessing import Normalization
@@ -114,15 +115,23 @@ all_features = layers.concatenate(
 		ang10_encoded,
     ]
 )
-x = layers.Dense(32, activation="relu")(all_features)
-#x2 = layers.Dense(32, activation="relu")(x)
-#x3 = layers.Dense(32, activation="relu")(x2)
+x = layers.Dense(10, activation="relu")(all_features)
+x2 = layers.Dense(2658, activation="relu")(x)
+x3 = layers.Dense(9, activation="relu")(x2)
 #x4 = layers.Dense(32, activation="relu")(x3)
-x = layers.Dropout(0.5)(x)
+x = layers.Dropout(0.5)(x3)
 output = layers.Dense(1, activation="sigmoid")(x)
 model = keras.Model(all_inputs, output)
-model.compile("adam", "binary_crossentropy", metrics=["accuracy"])
+model.compile("adam", "mse", metrics=["accuracy"])
 keras.utils.plot_model(model, to_file="model.png", show_shapes=True, rankdir="LR")
-model.fit(train_ds, epochs=50, validation_data=val_ds)
+history = model.fit(train_ds, epochs=200, validation_data=val_ds)
+#plt.plot(history.history['loss'])
+#plt.plot(history.history['val_loss'])
+plt.plot(history.history['accuracy'])
+plt.plot(history.history['val_accuracy'])
+plt.ylabel('accuracy')
+plt.xlabel('epoch')
+plt.legend(['train', 'validation'], loc='upper left')
+plt.show()
 model.evaluate(test_ds, verbose=1)
-model.save('./model')
+model.save('./modelLin')
